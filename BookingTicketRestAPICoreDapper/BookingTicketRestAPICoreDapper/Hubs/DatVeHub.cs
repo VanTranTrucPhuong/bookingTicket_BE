@@ -46,5 +46,16 @@ namespace BookingTicketRestAPICoreDapper.Hubs
             }
             await Clients.All.SendAsync("ReceiveListGheDangDat", dsGheDangDatReturn);
         }
+
+        public async Task SendRequestData(string taiKhoan, int maLichChieu)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var param = new DynamicParameters();
+                param.Add("@TENTAIKHOAN", taiKhoan);
+                param.Add("@MALICHCHIEU", maLichChieu);
+                await connection.ExecuteAsync("DS_GHE_DANG_DAT_DELETE", param, commandType: CommandType.StoredProcedure);           
+            }
+        }
     }
 }
